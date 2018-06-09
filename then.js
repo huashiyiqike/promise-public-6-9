@@ -1,7 +1,6 @@
 function Promise() {
   
 }
-
 Object.defineProperty(Promise.prototype,'then',{
   get(){
     throw new Error();

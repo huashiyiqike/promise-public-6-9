@@ -26,24 +26,52 @@ class Promise {
     }
   }
   then(onFufilled, onRejected) {
+    // 默认成功和失败不传的情况
+    onFufilled = typeof onFufilled === 'function' ? onFufilled : value => value;
+    onRejected = typeof onRejected === 'function' ? onRejected : err => { throw err }
     let promise2;
     promise2 = new Promise((resolve, reject) => {
       if (this.status === 'resolved') {
-        let x = onFufilled(this.value);
-        resolvePromise(promise2, x, resolve, reject);
+        setTimeout(() => {
+          try {
+            let x = onFufilled(this.value);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
+
       }
       if (this.status === 'rejected') {
-        let x = onRejected(this.reason);
-        resolvePromise(promise2, x, resolve, reject);
+        setTimeout(() => {
+          try {
+            let x = onRejected(this.reason);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
       }
       if (this.status === 'pending') {
         this.onResolvedCallbacks.push(() => {
-          let x = onFufilled(this.value);
-          resolvePromise(promise2, x, resolve, reject);
+          setTimeout(() => {
+            try {
+              let x = onFufilled(this.value);
+              resolvePromise(promise2, x, resolve, reject);
+            } catch (e) {
+              reject(e);
+            }
+          }, 0);
         });
         this.onRejectedCallbacks.push(() => {
-          let x = onRejected(this.reason);
-          resolvePromise(promise2, x, resolve, reject);
+          setTimeout(() => {
+            try {
+              let x = onRejected(this.reason);
+              resolvePromise(promise2, x, resolve, reject);
+            } catch (e) {
+              reject(e);
+            }
+          }, 0);
         })
       }
     });
@@ -66,7 +94,7 @@ function resolvePromise(promise2, x, resolve, reject) {
           if (called) return;
           called = true;
           // resolve的结果依旧是promise 那就继续解析
-          resolvePromise(promise2,y,resolve,reject);
+          resolvePromise(promise2, y, resolve, reject);
         }, r => {
           if (called) return;
           called = true;
@@ -84,5 +112,16 @@ function resolvePromise(promise2, x, resolve, reject) {
     resolve(x);
   }
 }
+// 目前是通过他测试 他会测试一个对象
+Promise.defer = Promise.deferred = function () {
+  let dfd = {}
+  dfd.promise = new Promise((resolve,reject)=>{
+    dfd.resolve = resolve;
+    dfd.reject = reject;
+  });
+  return dfd;
+}
 module.exports = Promise;
+// npm install  promises-aplus-tests -g
+// promises-aplus-tests 文件
 

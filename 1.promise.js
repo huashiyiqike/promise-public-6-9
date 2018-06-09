@@ -1,6 +1,7 @@
 let Promise = require('./Promise');
 let promise = new Promise((resolve, reject) => {
-  resolve();
+  resolve('xxx');
+  reject();
 });
 let p = new Promise((resolve, reject)=>{
   setTimeout(() => {
@@ -10,7 +11,7 @@ let p = new Promise((resolve, reject)=>{
 let promise2 = promise.then((data) => {
   return new Promise((resolve,reject)=>{
     resolve(new Promise((resolve,reject)=>{
-      reject(1000);
+      resolve(1000)
     }))
   })
 }, (err) => {
