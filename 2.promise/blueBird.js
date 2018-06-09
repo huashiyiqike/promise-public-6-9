@@ -8,7 +8,7 @@ function promisifyAll(obj) {
       // 把每一个函数 都promise化一下 ，每个方法都会多一个promise的方法
       obj[item + 'Async'] = promisify(obj[item]);
     }
-  })
+  });
 }
 promisifyAll(fs);
 function promisify(readFile) {
