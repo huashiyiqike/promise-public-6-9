@@ -77,6 +77,46 @@ class Promise {
     });
     return promise2;
   }
+  catch(fn){
+    return this.then(null,fn);
+  }
+}
+
+Promise.all = (promises) => {
+  return new Promise((resolve, reject) => {
+    let result = [];
+    let index = 0;
+    let processData = (key, y) => {
+      index++
+      result[key] = y;
+      if (promises.length === index) {
+        resolve(result);
+      }
+    }
+    for (let i = 0; i < promises.length; i++) {
+      promises[i].then(y => {
+        processData(i, y);
+      }, reject);
+    }
+  })
+}
+Promise.race =(promises) => {
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < promises.length; i++) {
+      promises[i].then(resolve, reject);
+    }
+  })
+}
+
+Promise.resolve = function (data) {
+  return new Promise((resolve,reject)=>{
+    resolve(data);
+  })
+}
+Promise.reject = function (data) {
+  return new Promise((resolve, reject) => {
+    reject(data);
+  })
 }
 // 实现多套promise共用的情况
 function resolvePromise(promise2, x, resolve, reject) {
@@ -113,6 +153,7 @@ function resolvePromise(promise2, x, resolve, reject) {
   }
 }
 // 目前是通过他测试 他会测试一个对象
+// 语法糖
 Promise.defer = Promise.deferred = function () {
   let dfd = {}
   dfd.promise = new Promise((resolve,reject)=>{
@@ -123,5 +164,8 @@ Promise.defer = Promise.deferred = function () {
 }
 module.exports = Promise;
 // npm install  promises-aplus-tests -g
-// promises-aplus-tests 文件
+// promises-aplus-tests
+
+
+
 
