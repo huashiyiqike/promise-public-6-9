@@ -1,22 +1,25 @@
 class Promise {
   constructor(executor) {
+    // 默认的状态
     this.status = 'pending';
+    // 原因
     this.value = undefined;
     this.reason = undefined;
+    // 成功存放的数组 
     this.onResolvedCallbacks = [];
+    // 失败存放的数组
     this.onRejectedCallbacks = [];
+    // 默认让执行器执行
     let resolve = (value) => {
       if(this.status === 'pending'){
-        this.status = 'resolved';
+        this.status = 'resolved'; // 成功了
         this.value = value;
-        this.onResolvedCallbacks.forEach(fn=>fn());
       }
     }
     let reject = (reason) => {
       if (this.status === 'pending') {
-        this.status = 'rejected';
+        this.status = 'rejected'; // 失败了
         this.reason = reason;
-        this.onRejectedCallbacks.forEach(fn => fn());
       }
     }
     executor(resolve,reject);
@@ -27,14 +30,6 @@ class Promise {
     }
     if (this.status === 'rejected') {
       onRejected(this.reason);
-    }
-    if( this.status === 'pending'){
-      this.onResolvedCallbacks.push(()=>{
-        onFufilled(this.value);
-      });
-      this.onRejectedCallbacks.push(()=>{
-        onRejected(this.reason);
-      })
     }
   }
 }

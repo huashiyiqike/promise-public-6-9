@@ -8,9 +8,9 @@
 // Promise是一个类
 // new Promise时 会传递一个执行器
 //1.实现基本的promise
- let Promise  = require('./Promise')
+let Promise  = require('./Promise')
 let promise = new Promise((resolve, reject) => {
-  reject('买');
+    reject('买');
 });
 promise.then((data) => {
   console.log('data', data);
