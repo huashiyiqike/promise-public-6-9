@@ -81,7 +81,6 @@ class Promise {
     return this.then(null,fn);
   }
 }
-
 Promise.all = (promises) => {
   return new Promise((resolve, reject) => {
     let result = [];
@@ -107,7 +106,6 @@ Promise.race =(promises) => {
     }
   })
 }
-
 Promise.resolve = function (data) {
   return new Promise((resolve,reject)=>{
     resolve(data);
