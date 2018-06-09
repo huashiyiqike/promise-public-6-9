@@ -51,3 +51,6 @@ fs.readFile('./1.txt', 'utf8', function (err, a) {
 fs.readFile('./2.txt', 'utf8', function (err, b) {
   events.emit(b);
 });
+
+// promise (可以解决回调问题) 不需要回调
+// axios fetch 基于promise
