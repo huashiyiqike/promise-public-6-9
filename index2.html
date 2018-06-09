@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0
+    }
+
+    div div {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: red
+    }
+    #ball1 {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #ball2 {
+      position: absolute;
+      top: 110px;
+      left: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="position: relative">
+    <div id="ball1"></div>
+    <div id="ball2"></div>
+  </div>
+  <script>
+    let $ = document.querySelector.bind(document);
+    function move(el, target, cb) {
+      return new Promise((resolve,reject)=>{
+        let index = 0;
+        let timer;
+        timer = setInterval(function () {
+          if (index >= target) {
+            clearInterval(timer)
+            return resolve();;
+          } else {
+            el.style.left = ++index + 'px';
+          }
+        }, 3);
+      })
+    }
+    move($('#ball1'), 500).then(data=>{
+       return move($('#ball2'), 500)
+    }).then(data=>{
+      alert('ok');
+    });
+  </script>
+</body>
+
+</html>
